@@ -1,0 +1,10 @@
+/* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .blueIcon {
+    @apply h-10 text-blue-500 cursor-pointer;
+  }
+}
