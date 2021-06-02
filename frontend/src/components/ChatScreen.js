@@ -10,36 +10,40 @@ import {
 } from "@heroicons/react/solid";
 import React, { useEffect, useRef, useState } from "react";
 import Message from "./Message";
+import { useDispatch } from "react-redux";
+import { closeChat, addMessage } from "../redux/actionCreators";
 
-function ChatScreen({
-  chatID,
-  messages,
-  user,
-  user2,
-  opened,
-  fetchChats,
-  setOpenedChat,
-}) {
+function ChatScreen({ chatID, messages, user, opened, user2 }) {
   const messageRef = useRef(null);
   const [wsclient, setWsClient] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const client = new WebSocket(
       "ws://" + window.location.host + "/ws/chat/" + chatID + "/"
     );
-    client.removeEventListener(onmessage, fetchChats);
-    client.onmessage = fetchChats;
+    client.removeEventListener(onmessage, receiveMessage);
+    client.onmessage = receiveMessage;
 
     setWsClient(client);
   }, [chatID]);
 
+  const receiveMessage = (event) => {
+    console.log(event.data);
+    console.log(typeof event.data);
+    console.log(JSON.parse(event.data).message);
+    dispatch(addMessage({ chatID, message: JSON.parse(event.data).message }));
+  };
+
   const sendMessage = () => {
-    wsclient.send(
-      JSON.stringify({
-        message: messageRef.current.value,
-      })
-    );
-    messageRef.current.value = "";
+    if (messageRef.current.value !== "") {
+      wsclient.send(
+        JSON.stringify({
+          message: messageRef.current.value,
+        })
+      );
+      messageRef.current.value = "";
+    }
   };
 
   const handleInputEnter = (e) => {
@@ -53,7 +57,7 @@ function ChatScreen({
       <div className="flex flex-col h-screen relative">
         <div className="flex items-center p-2 h-20 bg-white">
           <ArrowCircleLeftIcon
-            onClick={() => setOpenedChat({})}
+            onClick={() => dispatch(closeChat(chatID))}
             className="blueIcon ml-3"
           />
           <h1 className="mx-auto font-bold text-2xl">{user2.email}'s chat</h1>

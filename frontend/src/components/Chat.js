@@ -1,9 +1,12 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { openChat } from "../redux/actionCreators";
 
-function Chat({ username, image, message, id, openChat }) {
+function Chat({ username, image, message, id }) {
+  const dispatch = useDispatch();
   return (
     <div
-      onClick={() => openChat(id)}
+      onClick={() => dispatch(openChat(id))}
       className="flex items-center space-x-3 p-1 my-4 transform transition duration-500 ease-in-out hover:scale-105 cursor-pointer"
     >
       <img

@@ -1,80 +1,53 @@
-import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Blank from "./components/Blank";
 import ChatScreen from "./components/ChatScreen";
 import Sidebar from "./components/Sidebar";
+import { addChats, addUser } from "./redux/actionCreators";
+import { useEffect } from "react";
 
 function App() {
-  const [user, setUser] = useState({});
-  const [user2, setUser2] = useState({});
-  const [chats, setChats] = useState([]);
-  const [openedChat, setOpenedChat] = useState({});
+  const chats = useSelector((state) => state.chats);
+  const user = useSelector((state) => state.user);
+  const openedChat = useSelector((state) =>
+    Boolean(state.chats.filter((chat) => chat.open).length)
+  );
+
+  const dispatch = useDispatch();
+  console.log(openedChat);
 
   useEffect(() => {
-    //Fetching the logged user
-    fetch("/user")
-      .then((res) => {
-        return res.json();
-      })
-      .then((response) => {
-        setUser(response);
-      });
-    //Fetching the chats
-    fetch("/chats")
+    fetch(`${process.env.REACT_APP_API_URL}/chats`)
       .then((res) => res.json())
-      .then((response) => {
-        setChats(response);
+      .then((chats) => {
+        dispatch(addChats(chats));
       });
+
+    fetch(`${process.env.REACT_APP_API_URL}/user`)
+      .then((res) => res.json())
+      .then((user) => {
+        dispatch(addUser(user));
+      });
+    console.log("Calling use effect");
   }, []);
-
-  const fetchChats = async () => {
-    fetch("/chats")
-      .then((res) => res.json())
-      .then((response) => {
-        setChats(response);
-      });
-  };
-
-  const openChat = (id) => {
-    let chat = {};
-    setOpenedChat(chat);
-    for (let i = 0; i < chats.length; i++) {
-      if (chats[i].user1.id === id || chats[i].user2.id === id) {
-        chat = chats[i];
-        break;
-      }
-    }
-    const tempUser2 = chat.user1.id === user.id ? chat.user2 : chat.user1;
-    setUser2(tempUser2);
-    setOpenedChat(chat);
-  };
 
   return (
     <div className="flex">
-      <Sidebar
-        fetchChats={fetchChats}
-        openedChat={Boolean(Object.keys(openedChat).length)}
-        user={user}
-        chats={chats}
-        openChat={openChat}
-      />
-      {Object.keys(openedChat).length ? (
+      <Sidebar openedChat={openedChat} user={user} chats={chats} />
+
+      {Boolean(chats?.length) &&
         chats.map((chat) => {
-          const opened = openedChat.id === chat.id;
+          const user2 = chat.user1.id === user.id ? chat.user2 : chat.user1;
           return (
             <ChatScreen
-              setOpenedChat={setOpenedChat}
-              fetchChats={fetchChats}
-              opened={opened}
               chatID={chat.id}
+              opened={chat.open}
               user={user}
               user2={user2}
               messages={chat.messages}
             />
           );
-        })
-      ) : (
-        <Blank />
-      )}
+        })}
+      {!openedChat && <Blank />}
     </div>
   );
 }

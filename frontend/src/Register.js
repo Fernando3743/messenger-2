@@ -16,7 +16,7 @@ function Register() {
     e.preventDefault();
     const csrftoken = getCookie("csrftoken");
 
-    const request = new Request("/register", {
+    const request = new Request(`${process.env.REACT_APP_API_URL}/register`, {
       headers: { "X-CSRFToken": csrftoken },
     });
 

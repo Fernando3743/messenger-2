@@ -1,13 +1,9 @@
-import {
-  AdjustmentsIcon,
-  PlusCircleIcon,
-  SearchIcon,
-} from "@heroicons/react/outline";
+import { PlusCircleIcon, SearchIcon } from "@heroicons/react/outline";
 import React from "react";
 import { getCookie } from "../util/cookies";
 import Chat from "./Chat";
 
-function Sidebar({ chats, user, openChat, openedChat, fetchChats }) {
+function Sidebar({ chats, user, openedChat }) {
   const handleAddChat = async () => {
     const username = prompt("Write user's username you wanna chat with");
 
@@ -28,7 +24,7 @@ function Sidebar({ chats, user, openChat, openedChat, fetchChats }) {
         if (response.error) alert(response.error);
         else {
           console.log(response.message);
-          fetchChats();
+          //fetchChats();
         }
       });
   };
@@ -42,12 +38,12 @@ function Sidebar({ chats, user, openChat, openedChat, fetchChats }) {
       <div className="flex justify-between p-2 rounded-b-2xl h-20 items-center">
         <a href="/logout">
           <img
-            src={user.image}
+            src={user?.image}
             alt="User's profile"
             className="h-14 w-14 rounded-full object-cover"
           />
         </a>
-        <h1 className="font-bold text-2xl">Messages</h1>
+        <h1 className="font-bold text-2xl">{user?.email}</h1>
         <PlusCircleIcon onClick={handleAddChat} className="blueIcon" />
       </div>
       <div className="flex items-center mt-2 p-2 h-15 shadow-lg rounded-xl w-full space-x-2">
@@ -59,21 +55,23 @@ function Sidebar({ chats, user, openChat, openedChat, fetchChats }) {
         />
       </div>
       <div className="flex-1 overflow-y-scroll scrollbar-hide">
-        {chats.map((chat) => {
-          const { username, image, id } =
-            chat.user1.id === user.id ? chat.user2 : chat.user1;
-          const message = chat.messages[0]?.message || null;
-          return (
-            <Chat
-              key={id}
-              id={id}
-              username={username}
-              image={image}
-              message={message}
-              openChat={openChat}
-            />
-          );
-        })}
+        {chats.length > 0 &&
+          Object.keys(user) &&
+          chats.map((chat) => {
+            //User2 data
+            const { username, image } =
+              chat.user1.id === user.id ? chat.user2 : chat.user1;
+            const message = chat.messages[0]?.message || null;
+            return (
+              <Chat
+                key={chat.id}
+                id={chat.id}
+                username={username}
+                image={image}
+                message={message}
+              />
+            );
+          })}
       </div>
     </div>
   );
