@@ -4,6 +4,7 @@ import {
   OPEN_CHAT,
   CLOSE_CHAT,
   ADD_MESSAGE,
+  NEW_CHAT,
 } from "./actionTypes";
 
 export function addChats(chats) {
@@ -28,4 +29,8 @@ export const closeChat = (id) => ({
 export const addMessage = ({ chatID, message }) => ({
   type: ADD_MESSAGE,
   payload: { chatID, message },
+});
+export const newChat = (chat) => ({
+  type: NEW_CHAT,
+  payload: chat,
 });

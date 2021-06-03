@@ -5,6 +5,7 @@ import {
   OPEN_CHAT,
   CLOSE_CHAT,
   ADD_MESSAGE,
+  NEW_CHAT,
 } from "./actionTypes";
 
 export const chatsReducer = (state = [], action) => {
@@ -33,6 +34,8 @@ export const chatsReducer = (state = [], action) => {
         messages: [action.payload.message, ...oudatedChat.messages],
       };
       return [updatedChat, ...tempChats];
+    case NEW_CHAT:
+      return [action.payload, ...state];
     default:
       return state;
   }

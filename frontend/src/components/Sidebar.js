@@ -2,8 +2,12 @@ import { PlusCircleIcon, SearchIcon } from "@heroicons/react/outline";
 import React from "react";
 import { getCookie } from "../util/cookies";
 import Chat from "./Chat";
+import { newChat } from "../redux/actionCreators";
+import { useDispatch } from "react-redux";
 
 function Sidebar({ chats, user, openedChat }) {
+  const dispatch = useDispatch();
+
   const handleAddChat = async () => {
     const username = prompt("Write user's username you wanna chat with");
 
@@ -24,7 +28,7 @@ function Sidebar({ chats, user, openedChat }) {
         if (response.error) alert(response.error);
         else {
           console.log(response.message);
-          //fetchChats();
+          dispatch(newChat(response.chat));
         }
       });
   };
