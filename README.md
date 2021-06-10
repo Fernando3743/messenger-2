@@ -2,6 +2,10 @@
 
 Realtime chat app inspired in facebook's messenger, made using Djando channels, Web Sockets in the backend and ReactJS + TailwindCSS in the frontend.
 
+## Distinctiveness and Complexity 📚💻
+This project uses all the concepts taught in the course, uses Django as the backend and ReactJS + Redux + TailwindCSS in the frontend.
+This project differs from all the projects seen in the course, because it uses not only http:// connections for the django API's, but it also uses ws:// protocol (WebSockets) for bidirectional connection in realtime chats, also uses Redux in the frontend which increases the complexity of the project, but provides better performance in chats state management, and last but not least this project uses TailwindCSS whose utility-first classes give a responsive design to the project.
+
 ## Usage 🚀
 
 Clone this projects, install the requirements.txt and run the project in a docker container using 
@@ -31,6 +35,7 @@ _Frameworks / Libraries_
 * [ReactJS](https://es.reactjs.org/) - As the frontend
 * [TailwindCSS](https://tailwindcss.com/) - As the styling framework
 * [HeroIcons](https://heroicons.com/) - As the icons support.
+* [Redux](https://react-redux.js.org/) - As the app state manager.
 
 ## Project Requirements 📚
 

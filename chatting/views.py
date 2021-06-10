@@ -41,6 +41,7 @@ def new_chat(request):
         chat = Chat(user1=request.user, user2=user)
         chat.save()
         return JsonResponse({
+                'chat':chat.serialize(),
                 'message': 'Chat created successfully'
             })
     

@@ -9,33 +9,34 @@ function Login() {
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     const csrftoken = getCookie("csrftoken");
+    console.log(process.env.REACT_APP_API_URL);
 
-    const request = new Request("/login", {
+    const request = new Request(`${process.env.REACT_APP_API_URL}/login`, {
       headers: { "X-CSRFToken": csrftoken },
     });
 
-    fetch(request, {
+    const res = await fetch(request, {
       method: "POST",
       body: JSON.stringify({
         username: usernameRef.current.value,
         password: passwordRef.current.value,
       }),
-    })
-      .then((res) => {
-        // If wasn't redirected to index something went wrong.
-        if (res.redirected) history.push("/");
-        else return res.json();
-      })
-      .then((response) => {
-        if (response) {
-          setMessage(response.message);
-          usernameRef.current.value = "";
-          passwordRef.current.value = "";
-        }
-      });
+    });
+
+    const redirect = (await res).redirected;
+    const response = await res;
+    console.log(response, redirect);
+
+    if (redirect) history.push("/");
+    else {
+      const data = (await res).json();
+      setMessage((await data).message);
+      usernameRef.current.value = "";
+      passwordRef.current.value = "";
+    }
   };
 
   return (
