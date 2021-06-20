@@ -120,27 +120,27 @@ _Each table contains a serialize function for handling data serialization._
 
   _Redux's folder contains all the ReactJS files used in the frontend development, the node modules were installed using yarn, so all you need to do is run 'yarn' or 'npm i' to install all the node modules used in the project. **However** this folder already contains a **build** folder ready for Django to use._
 
-  * util 📁
-    - cookies.js 📄
-       _Js file that contains a getCookie function for handling Django csfr_token and logged user's data._
+* util 📁
+  - cookies.js 📄
+     _Js file that contains a getCookie function for handling Django csfr_token and logged user's data._
 
-    - App.js 📄
-       _React screen component that handles the project's home page._
+  - App.js 📄
+     _React screen component that handles the project's home page._
 
-    - index.css 📄
-      _CSS stylesheet main component, this one contains Tailwind config and some personalized classes._
+  - index.css 📄
+    _CSS stylesheet main component, this one contains Tailwind config and some personalized classes._
 
-    - index.js 📄
-      _React main file which injects react components to the html template._
+  - index.js 📄
+    _React main file which injects react components to the html template._
 
-    - Login.js 📄
-      _React screen component that handles the login page._
+  - Login.js 📄
+    _React screen component that handles the login page._
 
-     - Main.js 📄
-       _This file handles the projects routes using react-router-dom._
+   - Main.js 📄
+     _This file handles the projects routes using react-router-dom._
 
-     - Register.js 📄
-       _React screen component which handles the register page._
+   - Register.js 📄
+     _React screen component which handles the register page._
 
 ### project5: 📁
 
